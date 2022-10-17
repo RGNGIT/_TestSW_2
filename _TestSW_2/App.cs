@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static _TestSW_2.Storage;
 
 namespace _TestSW_2
 {
@@ -18,9 +19,19 @@ namespace _TestSW_2
             InitializeComponent();
         }
 
+        void RefreshList()
+        {
+            dataGridView.Rows.Clear();
+            foreach(Person person in Storage.Records)
+            {
+                dataGridView.Rows.Add(person.Name, person.Surname, person.DOB.ToString(), person.Address);
+            }
+        }
+
         void AddPerson()
         {
-
+            Storage.AddPerson(textBoxName.Text, textBoxSurname.Text, dateTimePickerDOB.Value, textBoxAddress.Text);
+            RefreshList();
         }
 
         private void buttonAdd_Click(object sender, EventArgs e)
@@ -116,6 +127,11 @@ namespace _TestSW_2
             int mindt = cur.Year - 7;
             dateTimePickerDOB.MaxDate = new DateTime(maxdt, 12, 31);
             dateTimePickerDOB.MinDate = new DateTime(mindt, 12, 31);
+        }
+
+        private void tabControl1_TabIndexChanged(object sender, EventArgs e)
+        {
+            RefreshList();
         }
     }
 }
